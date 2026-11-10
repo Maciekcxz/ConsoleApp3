@@ -1,11 +1,16 @@
-﻿using System;
+﻿
+using System;
+using System.Collections.Generic;
 
 namespace KontoNaMonety
 {
     internal class Konto
     {
         private decimal _saldo;
+
         private static int licznikKont = 0;
+
+        private List<decimal> historiaWplat = new List<decimal>();
 
         public int NumerKonta { get; }
 
@@ -19,18 +24,28 @@ namespace KontoNaMonety
         {
             if (kwota <= 0)
             {
-                Console.WriteLine("Kwota musi być większa od zera.");
                 return;
             }
 
             _saldo += kwota;
 
-            Console.WriteLine($"Wpłacono {kwota} zł. Nowy stan konta: {_saldo} zł.");
+            historiaWplat.Add(kwota);
         }
 
         public decimal StanKonta()
         {
             return _saldo;
+        }
+
+        public void PokazHistorieWplat()
+        {
+            Console.WriteLine("\nHistoria wpłat:");
+            Console.WriteLine("Liczba wpłat: " + historiaWplat.Count);
+
+            foreach (decimal kwota in historiaWplat)
+            {
+                Console.WriteLine("Wpłata: " + kwota + " zł");
+            }
         }
     }
 }

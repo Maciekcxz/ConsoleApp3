@@ -1,35 +1,82 @@
-﻿using System;
+﻿
+using System;
 using System.Globalization;
-using KontoNaMonety;
 
-namespace ConsoleApp3
+namespace KontoNaMonety
 {
     internal class Automat
     {
-        private readonly decimal[] PrzyjmowaneMonety = { 0.5m, 1m, 2m, 5m, 0.20m, 0.10m };
-        private int _iloscMonet;
-
-        public void Wrzucmonete(string wartoscMonety, Konto konto)
+        private readonly decimal[] PrzyjmowaneMonety =
         {
-            bool czyPoprawna = decimal.TryParse(wartoscMonety, CultureInfo.InvariantCulture, out decimal wartosc);
+            5m, 2m, 1m, 0.5m, 0.2m, 0.1m
+        };
 
-            if (!czyPoprawna)
-            {
-                Console.WriteLine("Nieprawidłowa wartość monety.");
-                return;
-            }
+        private int[] iloscMonet = new int[6];
 
-            foreach (decimal nominal in PrzyjmowaneMonety)
+        private int pojemnosc = 3;
+
+        public void WrzucMonety(string tekstMonet, Konto konto)
+        {
+            string[] monety = tekstMonet.Split(' ');
+
+            int przyjete = 0;
+            int zwrocone = 0;
+
+            foreach (string moneta in monety)
             {
-                if (wartosc == nominal)
+                bool czyPoprawna = decimal.TryParse(
+                    moneta,
+                    NumberStyles.Number,
+                    CultureInfo.InvariantCulture,
+                    out decimal wartosc
+                );
+
+                if (!czyPoprawna)
                 {
-                    konto.Wplac(nominal);
-                    _iloscMonet++;
-                    return;
+                    zwrocone++;
+                    continue;
                 }
+
+                int indeks = Array.IndexOf(PrzyjmowaneMonety, wartosc);
+
+                if (indeks == -1)
+                {
+                    zwrocone++;
+                    continue;
+                }
+
+                if (iloscMonet[indeks] >= pojemnosc)
+                {
+                    zwrocone++;
+                    continue;
+                }
+
+                iloscMonet[indeks]++;
+                konto.Wplac(wartosc);
+
+                przyjete++;
             }
 
-            Console.WriteLine("Nieprawidłowa moneta.");
+            Console.WriteLine("\nPrzyjęte monety: " + przyjete);
+            Console.WriteLine("Zwrócone monety: " + zwrocone);
+        }
+
+        public void PokazMonety()
+        {
+            Console.WriteLine("\nMonety w automacie:");
+
+            decimal suma = 0;
+
+            for (int i = 0; i < PrzyjmowaneMonety.Length; i++)
+            {
+                Console.WriteLine(
+                    PrzyjmowaneMonety[i] + " zł: " + iloscMonet[i]
+                );
+
+                suma += PrzyjmowaneMonety[i] * iloscMonet[i];
+            }
+
+            Console.WriteLine("Łączna wartość: " + suma + " zł");
         }
     }
 }

@@ -1,7 +1,7 @@
-﻿using System;
-using KontoNaMonety;
+﻿
+using System;
 
-namespace ConsoleApp3
+namespace KontoNaMonety
 {
     internal class Program
     {
@@ -10,27 +10,17 @@ namespace ConsoleApp3
             Konto kontonaMonety = new Konto();
             Automat automat = new Automat();
 
-            Console.WriteLine($"Numer konta: {kontonaMonety.NumerKonta}");
+            Console.WriteLine("Numer konta: " + kontonaMonety.NumerKonta);
 
-            automat.Wrzucmonete("1", kontonaMonety);    
-            automat.Wrzucmonete("2", kontonaMonety);
-             automat.Wrzucmonete("1", kontonaMonety);
-            Console.WriteLine($"Stan konta: {kontonaMonety.StanKonta()} zł.");
-            Konto kontoTestowe = new Konto();
-            Console.WriteLine($"Numer konta: {kontoTestowe.NumerKonta}");
-            automat.Wrzucmonete("1", kontoTestowe);
-            automat.Wrzucmonete("5", kontoTestowe);
-            automat.Wrzucmonete("1", kontoTestowe);
-            Console.WriteLine($"Stan konta: {kontoTestowe.StanKonta()} zł.");
+            automat.WrzucMonety("7 2 1 5 ", kontonaMonety);
 
+            Console.WriteLine("\n--- PODSUMOWANIE ---");
 
+            Console.WriteLine("Stan konta: " + kontonaMonety.StanKonta() + " zł");
 
+            kontonaMonety.PokazHistorieWplat();
 
+            automat.PokazMonety();
         }
-
-
-
-
-
     }
 }
