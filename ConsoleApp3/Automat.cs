@@ -1,6 +1,7 @@
 ﻿
 using System;
 using System.Globalization;
+using System.Linq;
 
 namespace KontoNaMonety
 {
@@ -33,6 +34,7 @@ namespace KontoNaMonety
 
                 if (!czyPoprawna)
                 {
+                    Console.WriteLine("Nieprawidłowy odczyt monety: " + moneta);
                     zwrocone++;
                     continue;
                 }
@@ -41,29 +43,36 @@ namespace KontoNaMonety
 
                 if (indeks == -1)
                 {
+                    Console.WriteLine("Nieprawidłowa moneta: " + wartosc);
                     zwrocone++;
                     continue;
                 }
 
                 if (iloscMonet[indeks] >= pojemnosc)
                 {
+                    Console.WriteLine("Brak miejsca na monetę: " + wartosc + " zł");
                     zwrocone++;
                     continue;
                 }
 
                 iloscMonet[indeks]++;
+
                 konto.Wplac(wartosc);
+
+                Console.WriteLine("Moneta przyjęta: " + wartosc + " zł");
 
                 przyjete++;
             }
 
-            Console.WriteLine("\nPrzyjęte monety: " + przyjete);
-            Console.WriteLine("Zwrócone monety: " + zwrocone);
+            Console.WriteLine("-----------------------");
+            Console.WriteLine("Monety przyjęte: " + przyjete);
+            Console.WriteLine("Monety zwrócone: " + zwrocone);
+            Console.WriteLine("-----------------------");
         }
 
         public void PokazMonety()
         {
-            Console.WriteLine("\nMonety w automacie:");
+            Console.WriteLine("Monety w automacie:");
 
             decimal suma = 0;
 
@@ -76,7 +85,7 @@ namespace KontoNaMonety
                 suma += PrzyjmowaneMonety[i] * iloscMonet[i];
             }
 
-            Console.WriteLine("Łączna wartość: " + suma + " zł");
+            Console.WriteLine("Łączna wartość monet: " + suma + " zł");
         }
     }
 }

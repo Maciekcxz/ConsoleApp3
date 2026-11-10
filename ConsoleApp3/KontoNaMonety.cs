@@ -24,12 +24,17 @@ namespace KontoNaMonety
         {
             if (kwota <= 0)
             {
+                Console.WriteLine("Kwota musi być większa od zera.");
                 return;
             }
 
             _saldo += kwota;
 
             historiaWplat.Add(kwota);
+
+            Console.WriteLine(
+                $"Wpłacono {kwota} zł. Nowy stan konta: {_saldo} zł."
+            );
         }
 
         public decimal StanKonta()
@@ -39,7 +44,8 @@ namespace KontoNaMonety
 
         public void PokazHistorieWplat()
         {
-            Console.WriteLine("\nHistoria wpłat:");
+            Console.WriteLine("Historia wpłat:");
+
             Console.WriteLine("Liczba wpłat: " + historiaWplat.Count);
 
             foreach (decimal kwota in historiaWplat)
